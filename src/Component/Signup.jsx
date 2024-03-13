@@ -1,17 +1,33 @@
 import React, { useRef, useState } from "react"
 import { Form, Button, Card, Alert } from "react-bootstrap"
+import { useAuth } from "../Context/AuthProvider"
 
 export default function Signup() {
-
   const [error, setError] = useState("")
   const [loading, setLoading] = useState(false)
   const emailRef = useRef()
   const passwordRef = useRef()
+  const {signUpFunction} = useAuth()
   const passwordConfirmRef = useRef()
 
- const handleSubmit = () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    if (passwordRef.current.value !== passwordConfirmRef.current.value) {
+      return setError("Password does not match")
+    }
+    if (passwordRef.current.value == "" || passwordConfirmRef.current.value == "" || emailRef.current.value) {
+      return setError("Input fields cannot be empty")
+    }
 
- }
+    try {
+      setError("")
+      setLoading(true)
+      signUpFunction(emailRef.current.value, passwordRef.current.value)
+      setLoading(false)
+    } catch {
+      setError("Failed to SignIn, Try Again Later...")
+    }
+  }
 
   return (
     <>
@@ -39,9 +55,7 @@ export default function Signup() {
           </Form>
         </Card.Body>
       </Card>
-      <div className="w-100 text-center mt-2">
-        Already have an account? Login
-      </div>
+      <div className="w-100 text-center mt-2">Already have an account? Login</div>
     </>
   )
 }

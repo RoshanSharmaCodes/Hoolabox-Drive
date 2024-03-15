@@ -1,34 +1,26 @@
 import React, { useRef, useState } from "react"
 import { Form, Button, Card, Alert } from "react-bootstrap"
 import { useAuth } from "../Context/AuthProvider"
-import { Link } from "react-router-dom/cjs/react-router-dom"
+import { Link } from "react-router-dom/cjs/react-router-dom.min"
 
-export default function Signup() {
+export default function LogIn() {
   const [error, setError] = useState("")
   const [loading, setLoading] = useState(false)
   const emailRef = useRef()
   const passwordRef = useRef()
-  const {currentUser, signUpFunction, loginFunction  } = useAuth()
-  const passwordConfirmRef = useRef()
+  const {signUpFunction, currentUser, loginFunction } = useAuth()
 
-  const handleSubmit = async (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault()
-    console.log("Credentials:")
-    console.log(passwordConfirmRef.current.value)
-    console.log(passwordRef.current.value)
-    console.log(emailRef.current.value)
 
-    if (passwordRef.current.value !== passwordConfirmRef.current.value) {
-      return setError("Password does not match")
-    }
-    if (passwordRef.current.value == "" || passwordConfirmRef.current.value == "" || emailRef.current.value == "") {
+    if (passwordRef.current.value == "" || emailRef.current.value == "") {
       return setError("Input fields cannot be empty")
     }
 
     try {
       setError("")
       setLoading(true)
-      signUpFunction(emailRef.current.value, passwordRef.current.value)
+      loginFunction(emailRef.current.value, passwordRef.current.value)
       setLoading(false)
     } catch {
       setError("Failed to SignIn, Try Again Later...")
@@ -40,9 +32,9 @@ export default function Signup() {
       {" "}
       <Card>
         <Card.Body>
-          <h2 className="text-center mb-4 w-full">Sign Up</h2>
+          <h2 className="text-center mb-4 w-full">Log-In</h2>
           {error && <Alert variant="danger">{error}</Alert>}
-          <Form onSubmit={handleSubmit}>
+          <Form onSubmit={handleLogin}>
             <Form.Group className="text-left" id="email">
               <Form.Label>Email</Form.Label>
               <Form.Control type="email" ref={emailRef} required />
@@ -51,17 +43,13 @@ export default function Signup() {
               <Form.Label>Password</Form.Label>
               <Form.Control type="password" ref={passwordRef} required />
             </Form.Group>
-            <Form.Group className="text-left" id="password-confirm">
-              <Form.Label>Password Confirmation</Form.Label>
-              <Form.Control type="password" ref={passwordConfirmRef} required />
-            </Form.Group>
             <Button disabled={loading} className="w-100" type="submit">
-              Sign Up
+              Log In
             </Button>
           </Form>
         </Card.Body>
       </Card>
-      <div className="w-100 text-center mt-2">Already have an account? <Link to="/LogIn">Log In</Link></div>
+      <div className="w-100 text-center mt-2">Don't have account? <Link to="/SignUp">Sign Up</Link></div>
     </>
   )
 }

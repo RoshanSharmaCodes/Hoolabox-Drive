@@ -19,6 +19,15 @@ export default function AuthProvider({ children }) {
     return auth.signInWithEmailAndPassword(email, password)
   }
 
+  const passResetFunction = (email) => {
+    return auth.sendPasswordResetEmail(email)
+  }
+
+  function logoutFunction() {
+    return auth.signOut()
+  }
+
+
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       setCurrentUser(user)
@@ -31,6 +40,8 @@ export default function AuthProvider({ children }) {
     currentUser,
     signUpFunction,
     loginFunction,
+    logoutFunction,
+    passResetFunction
   }
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
 }

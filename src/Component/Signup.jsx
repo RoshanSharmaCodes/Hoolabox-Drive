@@ -2,6 +2,7 @@ import React, { useRef, useState } from "react"
 import { Form, Button, Card, Alert } from "react-bootstrap"
 import { useAuth } from "../Context/AuthProvider"
 import { Link } from "react-router-dom/cjs/react-router-dom"
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min"
 
 export default function Signup() {
   const [error, setError] = useState("")
@@ -11,12 +12,10 @@ export default function Signup() {
   const {currentUser, signUpFunction, loginFunction  } = useAuth()
   const passwordConfirmRef = useRef()
 
+  const history = useHistory()
+
   const handleSubmit = async (e) => {
     e.preventDefault()
-    console.log("Credentials:")
-    console.log(passwordConfirmRef.current.value)
-    console.log(passwordRef.current.value)
-    console.log(emailRef.current.value)
 
     if (passwordRef.current.value !== passwordConfirmRef.current.value) {
       return setError("Password does not match")
@@ -30,6 +29,7 @@ export default function Signup() {
       setLoading(true)
       signUpFunction(emailRef.current.value, passwordRef.current.value)
       setLoading(false)
+      history.push("/Login")
     } catch {
       setError("Failed to SignIn, Try Again Later...")
     }

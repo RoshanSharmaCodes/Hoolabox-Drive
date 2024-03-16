@@ -7,6 +7,8 @@ import { BrowserRouter, Router } from "react-router-dom/cjs/react-router-dom.min
 import { Route, Switch } from "react-router-dom/cjs/react-router-dom"
 import Dashboard from "./Component/Dashboard"
 import Login from "./Component/Login"
+import PasswordReset from "./Component/PasswordReset"
+import PrivateRoutes from "./Component/PrivateRoutes"
 
 function App() {
   return (
@@ -16,9 +18,10 @@ function App() {
           <BrowserRouter>
             <AuthProvider>
               <Switch>
-                <Route exact path="/" component={Dashboard} />
+                <PrivateRoutes exact path="/" component={Dashboard} />
                 <Route path="/SignUp" component={Signup} />
                 <Route path="/LogIn" component={Login} />
+                <Route path="/PasswordReset" component={PasswordReset}/>
               </Switch>
             </AuthProvider>
           </BrowserRouter>
